@@ -3,6 +3,8 @@ package tk.alltrue.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import tk.alltrue.data.HotelContract.GuestEntry;
 
 public class HotelDbHelper extends SQLiteOpenHelper {
@@ -31,7 +33,14 @@ public class HotelDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        // Запишем в журнал
+        Log.w("SQLite", "Обновляемся с версии " + oldVersion + " на версию " + newVersion);
 
+        // Удаляем старую таблицу и создаём новую
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GuestEntry.TABLE_NAME);
+        // Создаём новую таблицу
+        onCreate(sqLiteDatabase);
     }
+
 }
