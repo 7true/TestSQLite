@@ -1,6 +1,7 @@
 package tk.alltrue.testsqlite;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -9,11 +10,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import tk.alltrue.data.HotelContract.GuestEntry;
 import tk.alltrue.data.HotelDbHelper;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +64,62 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayDatabaseInfo() {
+
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                GuestEntry._ID,
+                GuestEntry.COLUMN_NAME,
+                GuestEntry.COLUMN_CITY,
+                GuestEntry.COLUMN_GENDER,
+                GuestEntry.COLUMN_AGE
+        };
+
+        Cursor cursor = db.query(
+                GuestEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+
+        TextView displayTextView = (TextView) findViewById(R.id.text_view_info);
+
+        try {
+            displayTextView.setText("Таблица содержит " + cursor.getCount() + " гостей.\n\n");
+            displayTextView.append(GuestEntry._ID + " - " +
+                    GuestEntry.COLUMN_NAME + " - " +
+                    GuestEntry.COLUMN_CITY + " - " +
+                    GuestEntry.COLUMN_GENDER + " - " +
+                    GuestEntry.COLUMN_AGE + "\n");
+
+            int idColumnIndex = cursor.getColumnIndex(GuestEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(GuestEntry.COLUMN_NAME);
+            int cityColumnIndex = cursor.getColumnIndex(GuestEntry.COLUMN_CITY);
+            int genderColumnIndex = cursor.getColumnIndex(GuestEntry.COLUMN_GENDER);
+            int ageColumnIndex = cursor.getColumnIndex(GuestEntry.COLUMN_AGE);
+
+            while (cursor.moveToNext()) {
+                int currentID = cursor.getInt(idColumnIndex);
+                String currentName = cursor.getString(nameColumnIndex);
+                String currentCity = cursor.getString(cityColumnIndex);
+                int currentGender = cursor.getInt(genderColumnIndex);
+                int currentAge = cursor.getInt(ageColumnIndex);
+
+                displayTextView.append(("\n" + currentID + " - " +
+                        currentName + " - " +
+                        currentCity + " - " +
+                        currentGender + " - " +
+                        currentGender + " - " +
+                        currentAge));
+            }
+
+        } finally {
+            cursor.close();
+        }
     }
 
 }
