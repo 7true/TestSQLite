@@ -1,5 +1,6 @@
 package tk.alltrue.testsqlite;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,8 +40,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mDbHelper = new HotelDbHelper(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -56,12 +64,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.insert:
+                insertGuest();
+                displayDatabaseInfo();
+                return true;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void displayDatabaseInfo() {
 
@@ -74,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 GuestEntry.COLUMN_GENDER,
                 GuestEntry.COLUMN_AGE
         };
-
+ 
         Cursor cursor = db.query(
                 GuestEntry.TABLE_NAME,
                 projection,
@@ -120,6 +136,18 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             cursor.close();
         }
+    }
+
+    private void insertGuest() {
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(GuestEntry.COLUMN_NAME, "Frosya");
+        values.put(GuestEntry.COLUMN_CITY, "Krsk");
+        values.put(GuestEntry.COLUMN_GENDER, GuestEntry.GENDER_FEMALE);
+        values.put(GuestEntry.COLUMN_AGE, 7);
+
+        long newRowId = db.insert(GuestEntry.TABLE_NAME, null, values);
     }
 
 }

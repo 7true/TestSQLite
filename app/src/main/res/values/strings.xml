@@ -7,6 +7,7 @@
     <string name="gender_unknown">Unknown</string>
     <string name="gender_male">Cat</string>
     <string name="gender_female">Kitty</string>
+    <string name="insert">Insert item</string>
     <string-array name="array_gender_options">
         <item>@string/gender_female</item>
         <item>@string/gender_male</item>
