@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 GuestEntry.COLUMN_GENDER,
                 GuestEntry.COLUMN_AGE
         };
- 
+
         Cursor cursor = db.query(
                 GuestEntry.TABLE_NAME,
                 projection,
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         TextView displayTextView = (TextView) findViewById(R.id.text_view_info);
 
         try {
-            displayTextView.setText("Таблица содержит " + cursor.getCount() + " гостей.\n\n");
+            displayTextView.setText("Table contains " + cursor.getCount() + " guests.\n\n");
             displayTextView.append(GuestEntry._ID + " - " +
                     GuestEntry.COLUMN_NAME + " - " +
                     GuestEntry.COLUMN_CITY + " - " +

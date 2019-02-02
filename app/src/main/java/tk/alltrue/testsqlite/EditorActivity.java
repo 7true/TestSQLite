@@ -96,7 +96,8 @@ public class EditorActivity extends AppCompatActivity {
                 if(item.isChecked()==true) {
                     insertGuest();
                     finish();
-                    return true;}
+                    return true;
+                }
             case R.id.action_delete:
                 return true;
 
