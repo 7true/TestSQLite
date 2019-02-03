@@ -35,9 +35,6 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar1);
-
         mNameEditText = (EditText) findViewById(R.id.edit_guest_name);
         mCityEditText = (EditText) findViewById(R.id.edit_guest_city);
         mAgeEditText = (EditText) findViewById(R.id.edit_guest_age);
@@ -88,18 +85,13 @@ public class EditorActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id) {
-            case R.id.action_save:
-                if(item.isChecked()==true) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
                     insertGuest();
                     finish();
                     return true;
-                }
-            case R.id.action_delete:
-                return true;
 
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
